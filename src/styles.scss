@@ -6,6 +6,12 @@
   --font-secondary: "Roboto", "Inter", "Segoe UI", sans-serif;
 }
 
+@media (max-width: 768px) {
+  :root {
+    --app-bg: #000000;
+  }
+}
+
 html,
 body {
   margin: 0;
