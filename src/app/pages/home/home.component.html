@@ -6,9 +6,123 @@
   [bendRadius]="5"
   [bendStrength]="-0.5"
   [interactive]="true"
-  [parallax]="true"
+  [parallax]="false"
 />
 
 <app-header />
 
-<main class="page-content"></main>
+<main class="page-content">
+  <section class="hero">
+    <h1 class="hero__title">
+      Pare de pensar.
+      <span class="hero__title-highlight">Comece a codar.</span>
+    </h1>
+
+    <p class="hero__subtitle">
+      Receba ideias de projetos sob medida baseadas na sua stack e no seu nível de
+      experiência.
+    </p>
+
+    <article class="generator-card">
+      <label class="field-label" for="current-stacks">Stacks Atuais</label>
+      <div class="tag-input">
+        @for (stack of stacks; track stack) {
+          <span class="tag-chip">
+            {{ stack }}
+            <button
+              type="button"
+              class="tag-chip__remove"
+              (click)="removeTag('stacks', stack)"
+              [attr.aria-label]="'Remover ' + stack"
+            >
+              ×
+            </button>
+          </span>
+        }
+        <input
+          id="current-stacks"
+          class="tag-input__field"
+          type="text"
+          placeholder="Ex: React, Python, Node.js..."
+          (keydown)="onTagKeydown($event, 'stacks')"
+          (blur)="onTagBlur($event, 'stacks')"
+        />
+      </div>
+      <p class="field-hint">Pressione Enter ou vírgula para adicionar</p>
+
+      <h2 class="field-label">Nível de Experiência</h2>
+      <div class="experience-group" role="group" aria-label="Nível de experiência">
+        <button
+          type="button"
+          class="experience-button"
+          [class.experience-button--active]="experienceLevel === 'iniciante'"
+          (click)="setExperience('iniciante')"
+        >
+          Iniciante
+        </button>
+
+        <button
+          type="button"
+          class="experience-button"
+          [class.experience-button--active]="experienceLevel === 'intermediario'"
+          (click)="setExperience('intermediario')"
+        >
+          Intermediário
+        </button>
+
+        <button
+          type="button"
+          class="experience-button"
+          [class.experience-button--active]="experienceLevel === 'avancado'"
+          (click)="setExperience('avancado')"
+        >
+          Avançado
+        </button>
+      </div>
+
+      <label class="field-label" for="focus-areas">Áreas de Foco (opcional)</label>
+      <div class="tag-input">
+        @for (focusArea of focusAreas; track focusArea) {
+          <span class="tag-chip">
+            {{ focusArea }}
+            <button
+              type="button"
+              class="tag-chip__remove"
+              (click)="removeTag('focusAreas', focusArea)"
+              [attr.aria-label]="'Remover ' + focusArea"
+            >
+              ×
+            </button>
+          </span>
+        }
+        <input
+          id="focus-areas"
+          class="tag-input__field"
+          type="text"
+          placeholder="Ex: Arquitetura, Testes, DevOps..."
+          (keydown)="onTagKeydown($event, 'focusAreas')"
+          (blur)="onTagBlur($event, 'focusAreas')"
+        />
+      </div>
+      <p class="field-hint">Pressione Enter ou vírgula para adicionar</p>
+
+      <button type="button" class="generate-button">
+        <svg
+          class="generate-button__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path d="M4 20L11 13" />
+          <path d="M15 6l3-3 3 3-3 3-3-3Z" />
+          <path d="M7 17l-4 4" />
+          <path d="M14 7l3 3" />
+          <path d="M5 7h4" />
+          <path d="M7 5v4" />
+        </svg>
+        Gerar Projeto
+      </button>
+    </article>
+  </section>
+</main>

@@ -1,5 +1,20 @@
 /* Global styles */
 
+:root {
+  --font-primary: "Inter", "Roboto", "Segoe UI", sans-serif;
+  --font-secondary: "Roboto", "Inter", "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-primary);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #6746b5 #05020f;

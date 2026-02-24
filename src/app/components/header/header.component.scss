@@ -45,11 +45,11 @@
 
 .brand__text {
   display: inline-block;
-  font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Menlo, monospace;
-  font-size: 1.18rem;
+  font-family: var(--font-primary);
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
   color: #f2eaff;
   text-shadow: 0 0 14px rgba(147, 100, 255, 0.25);
 }
@@ -75,9 +75,10 @@
 }
 
 .header__link {
+  font-family: var(--font-secondary);
   color: rgba(248, 247, 255, 0.9);
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   transition:
@@ -146,7 +147,7 @@
   }
 
   .brand__text {
-    font-size: 1.02rem;
+    font-size: 0.95rem;
   }
 
   .header__right {
