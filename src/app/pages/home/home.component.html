@@ -43,7 +43,8 @@
           id="current-stacks"
           class="tag-input__field"
           type="text"
-          placeholder="Ex: React, Python, Node.js..."
+          [attr.placeholder]="stacks.length === 0 ? 'Ex: React, Python, Node.js...' : null"
+          (focus)="onTagFocus('stacks')"
           (keydown)="onTagKeydown($event, 'stacks')"
           (blur)="onTagBlur($event, 'stacks')"
         />
@@ -99,14 +100,19 @@
           id="focus-areas"
           class="tag-input__field"
           type="text"
-          placeholder="Ex: Arquitetura, Testes, DevOps..."
+          [attr.placeholder]="focusAreas.length === 0 ? 'Ex: Arquitetura, Testes, DevOps...' : null"
           (keydown)="onTagKeydown($event, 'focusAreas')"
           (blur)="onTagBlur($event, 'focusAreas')"
         />
       </div>
       <p class="field-hint">Pressione Enter ou vírgula para adicionar</p>
 
-      <button type="button" class="generate-button">
+      <button
+        type="button"
+        class="generate-button"
+        [disabled]="isGenerating || stacks.length === 0"
+        (click)="generateProject()"
+      >
         <svg
           class="generate-button__icon"
           viewBox="0 0 24 24"
@@ -121,8 +127,69 @@
           <path d="M5 7h4" />
           <path d="M7 5v4" />
         </svg>
-        Gerar Projeto
+        {{ isGenerating ? 'Gerando...' : 'Gerar Projeto' }}
       </button>
+
+      @if (showStacksRequiredMessage) {
+        <p class="response-message" role="status">Adicione pelo menos uma stack para gerar uma ideia.</p>
+      }
+
+      @if (requestError) {
+        <p class="response-message response-message--error" role="alert">{{ requestError }}</p>
+      }
     </article>
+
+    @if (generatedIdeas.length > 0) {
+      <section class="ideas-grid" aria-live="polite">
+        @for (idea of generatedIdeas; track $index; let index = $index) {
+          <button
+            type="button"
+            class="idea-card"
+            [class.idea-card--selected]="expandedIdeaIndex === index"
+            (click)="openExpandedIdea(index)"
+          >
+            <span class="idea-card__badge">Projeto {{ index + 1 }}</span>
+            <h3 class="idea-card__title">{{ idea.title }}</h3>
+            <p class="idea-card__preview">{{ idea.preview }}</p>
+            <span class="idea-card__cta">Clique para expandir</span>
+          </button>
+        }
+      </section>
+    }
+
+    @if ((generatedText || generatedJson) && generatedIdeas.length === 0) {
+      <section class="response-card" aria-live="polite">
+        @if (generatedText) {
+          <p class="response-card__summary">{{ generatedText }}</p>
+        }
+        @if (generatedJson) {
+          <pre class="response-card__json">{{ generatedJson }}</pre>
+        }
+      </section>
+    }
   </section>
 </main>
+
+@if (expandedIdea; as idea) {
+  <div class="idea-overlay" (click)="closeExpandedIdea()">
+    <article
+      class="idea-modal"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="'Detalhes do projeto ' + idea.title"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        type="button"
+        class="idea-modal__close"
+        (click)="closeExpandedIdea()"
+        aria-label="Fechar detalhes"
+      >
+        ×
+      </button>
+      <p class="idea-modal__eyebrow">Projeto em destaque</p>
+      <h3 class="idea-modal__title">{{ idea.title }}</h3>
+      <div class="response-card__markdown idea-modal__content" [innerHTML]="idea.html"></div>
+    </article>
+  </div>
+}

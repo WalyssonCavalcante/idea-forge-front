@@ -1,27 +1,110 @@
-# IdeaForgeFront
+# Idea Forge Front
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.0.
+Frontend do **Idea Forge**, uma aplicação Angular que gera ideias de projeto com base em:
 
-## Development server
+- stacks atuais do usuário;
+- nível de experiência;
+- áreas de foco opcionais.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+A interface renderiza cards de ideias e um modal com detalhes quando a API retorna conteúdo em Markdown.
 
-## Code scaffolding
+## Screenshot
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![Screenshot da aplicação](./screenshot.png)
 
-## Build
+## Stack
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Angular 21 (standalone components);
+- TypeScript;
+- SCSS;
+- RxJS;
+- Three.js (fundo animado com shader).
 
-## Running unit tests
+## Funcionalidades
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Entrada de tags para `Stacks Atuais` e `Áreas de Foco`;
+- Adição de tags com `Enter` ou `,`;
+- Remoção de tag individual e remoção da última tag com `Backspace` (input vazio);
+- Seleção de nível de experiência (`Iniciante`, `Intermediário`, `Avançado`);
+- Geração de ideias via API (`POST /api/v1/ideas/generate`);
+- Parsing de `markdownContent` para cards e modal de detalhes;
+- Fallback para texto/JSON quando a resposta não vem em markdown estruturado;
+- Tratamento de erros de requisição com mensagem amigável.
 
-## Running end-to-end tests
+## Pré-requisitos
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Node.js;
+- npm;
+- Backend do Idea Forge rodando localmente (padrão: `http://localhost:8080`).
 
-## Further help
+## Instalação
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+npm install
+```
+
+## Executando em desenvolvimento
+
+```bash
+npm start
+```
+
+A aplicação sobe em `http://localhost:4200/`.
+
+## Scripts disponíveis
+
+- `npm start`: inicia servidor de desenvolvimento;
+- `npm run build`: gera build de produção em `dist/idea-forge-front`;
+- `npm run watch`: build em modo watch (configuração de desenvolvimento);
+- `npm test`: executa testes unitários com Karma.
+
+## Integração com API
+
+Endpoint atual no frontend:
+
+- `src/app/services/idea.service.ts`
+- URL padrão: `http://localhost:8080/api/v1/ideas/generate`
+
+Payload enviado:
+
+```json
+{
+  "stacks": ["React", "Node.js"],
+  "experienceLevel": "Intermediate",
+  "focusAreas": ["Arquitetura", "Testes"]
+}
+```
+
+Mapeamento de nível de experiência:
+
+- `iniciante` -> `Beginner`
+- `intermediario` -> `Intermediate`
+- `avancado` -> `Advanced`
+
+## Formatos de resposta aceitos
+
+O frontend suporta múltiplos formatos de resposta:
+
+- Objeto com `markdownContent` (preferencial, com separação por `---` para múltiplas ideias);
+- String simples;
+- Objeto com campos de texto como `idea`, `projectIdea`, `content`, `description`, `message` ou `result`.
+
+## Estrutura principal
+
+```text
+src/
+  app/
+    components/
+      floating-lines/
+      header/
+    pages/
+      home/
+    services/
+      idea.service.ts
+```
+
+## Observações
+
+- A pasta `out-tsc/` é saída intermediária de compilação do Angular/TypeScript;
+- Não é pasta de deploy;
+- Pode ser recriada automaticamente durante build/teste.
